@@ -399,7 +399,7 @@ class PySendPulse:
             'sender_name': from_name,
             'sender_email': from_email,
             'subject': subject,
-            'body': base64.b64encode(body),
+            'body': base64.b64encode(body.encode('utf-8')),
             'list_id': addressbook_id,
             'name': campaign_name,
             'attachments': json.dumps(attachments)
@@ -636,7 +636,7 @@ class PySendPulse:
             return self.__handle_error('Seems we have empty subject')
         elif not email.get('from') or not email.get('to'):
             return self.__handle_error("Seems we have empty some credentials 'from': '{}' or 'to': '{}' fields".format(email.get('from'), email.get('to')))
-        email['html'] = base64.b64encode(email.get('html'))
+        email['html'] = base64.b64encode(email.get('html').encode('utf-8')).decode('utf-8')
         return self.__handle_result(self.__send_request('smtp/emails', 'POST', {'email': json.dumps(email)}))
 
     # ------------------------------------------------------------------ #
